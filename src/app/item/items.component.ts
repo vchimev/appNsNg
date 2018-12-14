@@ -16,6 +16,7 @@ export class ItemsComponent implements OnInit {
     constructor(private itemService: ItemService) { }
 
     ngOnInit(): void {
+        console.log("---> ngOnInit");
         this.items = this.itemService.getItems();
     }
 }
