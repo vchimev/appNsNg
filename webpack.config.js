@@ -171,15 +171,26 @@ module.exports = env => {
                 // tns-core-modules reads the app.css and its imports using css-loader
                 {
                     test: /[\/|\\]app\.css$/,
-                    use: {
-                        loader: "css-loader",
-                        options: { minimize: false, url: false },
-                    }
+                    use: [
+                        {
+                            loader: "nativescript-dev-webpack/style-hot-loader",
+                        },
+                        {
+                            loader: "css-loader",
+                            options: { minimize: false, url: false },
+                        }
+                    ]
                 },
                 {
                     test: /[\/|\\]app\.scss$/,
                     use: [
-                        { loader: "css-loader", options: { minimize: false, url: false } },
+                        {
+                            loader: "nativescript-dev-webpack/style-hot-loader",
+                        },
+                        {
+                            loader: "css-loader",
+                            options: { minimize: false, url: false }
+                        },
                         "sass-loader"
                     ]
                 },

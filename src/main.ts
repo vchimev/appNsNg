@@ -7,22 +7,38 @@ import { AppModule } from "./app/app.module";
 console.log("---> main.ts");
 
 let options: AppOptions = {};
+
 if (module['hot']) {
+    // Original
     const hmrUpdate = require("nativescript-dev-webpack/hmr").hmrUpdate;
 
     options.hmrOptions = {
         moduleTypeFactory: () => AppModule,
         livesyncCallback: (platformReboot) => {
-            console.log("---> HMR: Sync...")
-            hmrUpdate();
+            console.log("HMR livesyncCallback: Sync...")
+            // hmrUpdate();
             setTimeout(platformReboot, 0);
         },
     }
     hmrUpdate();
 
+    // Additional
+    global["__hmrLivesyncBackup"] = global.__onLiveSync;
+    global.__onLiveSync = function () {
+        console.log("HMR __onLiveSync: Sync...");
+        hmrUpdate();
+    };
+
+    // TODO: Refactor
+    global["__hmrRefresh"] = function ({ type, module }) {
+        setTimeout(() => {
+            global["__hmrLivesyncBackup"]({ type, module });
+        });
+    }
+
     // Path to your app module.
-	// You might have to change it if your module is in a different place.
-    module['hot'].accept(["./app/app.module"]);
+    // You might have to change it if your module is in a different place.
+    module['hot'].accept(["./app/app.module"], global["__hmrRefresh"]);
 }
 
 // A traditional NativeScript application starts by initializing global objects, setting up global CSS rules, creating, and navigating to the main page.
