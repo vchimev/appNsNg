@@ -8,33 +8,34 @@ console.log("---> main.ts");
 
 let options: AppOptions = {};
 
+// const hmrUpdate = require("nativescript-dev-webpack/hmr").hmrUpdate;
+
+// // Additional
+// global["__hmrLivesyncBackup"] = global.__onLiveSync;
+// global.__onLiveSync = function () {
+//     console.log("HMR __onLiveSync: Sync...");
+//     hmrUpdate();
+// };
+
+// // TODO: Refactor
+// global["__hmrRefresh"] = function ({ type, module }) {
+//     setTimeout(() => {
+//         global["__hmrLivesyncBackup"]({ type, module });
+//     });
+// }
+
 if (module['hot']) {
-    // Original
     const hmrUpdate = require("nativescript-dev-webpack/hmr").hmrUpdate;
 
     options.hmrOptions = {
         moduleTypeFactory: () => AppModule,
         livesyncCallback: (platformReboot) => {
             console.log("HMR livesyncCallback: Sync...")
-            // hmrUpdate();
             setTimeout(platformReboot, 0);
         },
     }
+
     hmrUpdate();
-
-    // Additional
-    global["__hmrLivesyncBackup"] = global.__onLiveSync;
-    global.__onLiveSync = function () {
-        console.log("HMR __onLiveSync: Sync...");
-        hmrUpdate();
-    };
-
-    // TODO: Refactor
-    global["__hmrRefresh"] = function ({ type, module }) {
-        setTimeout(() => {
-            global["__hmrLivesyncBackup"]({ type, module });
-        });
-    }
 
     // Path to your app module.
     // You might have to change it if your module is in a different place.
