@@ -25,7 +25,7 @@ let options: AppOptions = {};
 // }
 
 if (module['hot']) {
-    const hmrUpdate = require("nativescript-dev-webpack/hmr").hmrUpdate;
+    // const hmrUpdate = require("nativescript-dev-webpack/hmr").hmrUpdate;
 
     options.hmrOptions = {
         moduleTypeFactory: () => AppModule,
@@ -35,7 +35,7 @@ if (module['hot']) {
         },
     }
 
-    hmrUpdate();
+    // hmrUpdate();
 
     // Path to your app module.
     // You might have to change it if your module is in a different place.
